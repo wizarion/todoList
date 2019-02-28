@@ -6,36 +6,50 @@ export default class ItemList extends React.Component {
       super(props)
 
       this.state = {
-         task: '',
          editable: false
       }
 
       this.toggleEditable = this.toggleEditable.bind(this)
-      this.handleInput = this.handleInput.bind(this)
+      this.handleBlur = this.handleBlur.bind(this)
+      this.handleEnter = this.handleEnter.bind(this)
    }
 
+   /**
+    * Habilita/desabilita a edição de cada task.
+    */
    toggleEditable() {
       this.setState({
          editable: !this.state.editable
       })
    }
 
-   componentWillMount() {
-      this.setState({
-         task: this.props.task
-      })
+   /**
+    * Chama a function de List.js para atualizar o valor da task.
+    * @param {*} event 
+    */
+   handleBlur(e) {
+      this.props.handleBlur(e.currentTarget.value)
+      this.toggleEditable()
    }
 
-   handleInput(e) {
-      this.setState({
-         task: e.target.value
-      })
+   /**
+    * Captura key "Enter" para acionar a function handleBlur.
+    * @param {*} event 
+    */
+   handleEnter(e) {
+      if (e.key === 'Enter') this.handleBlur(e)
    }
 
    render() {
-      return(
+      return (
          <li onDoubleClick={this.toggleEditable} >
-            {!this.state.editable ? <label>{this.state.task}</label> : <input autoFocus onBlur={this.toggleEditable} value={this.state.task} onChange={this.handleInput}></input>}
+            {!this.state.editable ? <label>{this.props.task}</label> :
+               <input
+                  autoFocus
+                  onBlur={this.handleBlur}
+                  onKeyPress={this.handleEnter}
+                  defaultValue={this.props.task}>
+               </input>}
          </li>
       )
    }
