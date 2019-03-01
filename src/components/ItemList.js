@@ -1,4 +1,5 @@
 import React from 'react'
+import './itemList.css'
 
 export default class ItemList extends React.Component {
 
@@ -9,47 +10,55 @@ export default class ItemList extends React.Component {
          editable: false
       }
 
-      this.toggleEditable = this.toggleEditable.bind(this)
       this.handleBlur = this.handleBlur.bind(this)
       this.handleEnter = this.handleEnter.bind(this)
-   }
-
-   /**
-    * Habilita/desabilita a edição de cada task.
-    */
-   toggleEditable() {
-      this.setState({
-         editable: !this.state.editable
-      })
    }
 
    /**
     * Chama a function de List.js para atualizar o valor da task.
     * @param {*} event 
     */
-   handleBlur(e) {
-      this.props.handleBlur(e.currentTarget.value)
-      this.toggleEditable()
+   handleBlur(event) {
+      this.props.handleBlur(event.currentTarget.value)
+      this.toggleState('editable')
+   }
+
+   /**
+  * Habilita/desabilita a key passada no state.
+  * @param {*} key 
+  */
+   toggleState(key) {
+      this.setState({
+         [key]: !this.state[key]
+      })
    }
 
    /**
     * Captura key "Enter" para acionar a function handleBlur.
     * @param {*} event 
     */
-   handleEnter(e) {
-      if (e.key === 'Enter') this.handleBlur(e)
+   handleEnter(event) {
+      if (event.key === 'Enter') this.handleBlur(event)
    }
 
    render() {
+      let { editable } = this.state
       return (
-         <li onDoubleClick={this.toggleEditable} >
-            {!this.state.editable ? <label>{this.props.task}</label> :
+         <li>
+            <input type="checkbox" checked={this.props.checked} onChange={() => this.props.toggleChecked()}></input>
+            {!editable ?
+               <label
+                  onDoubleClick={() => this.toggleState('editable')}
+                  className={this.props.checked ? 'taskDone' : ''}
+               >{this.props.taskName}</label> :
                <input
                   autoFocus
                   onBlur={this.handleBlur}
                   onKeyPress={this.handleEnter}
-                  defaultValue={this.props.task}>
+                  defaultValue={this.props.taskName}>
                </input>}
+
+            <button onClick={this.props.removeTask}>X</button>
          </li>
       )
    }

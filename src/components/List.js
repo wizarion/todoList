@@ -10,11 +10,13 @@ export default class List extends React.Component {
          input: '',
          toDoList: []
       }
-      
+
       this.handleInputValue = this.handleInputValue.bind(this)
       this.handleSubmit = this.handleSubmit.bind(this)
       this.removeTask = this.removeTask.bind(this)
       this.handleInput = this.handleInput.bind(this)
+      this.toggleChecked = this.toggleChecked.bind(this)
+      this.checkAll = this.checkAll.bind(this)
    }
 
    /**
@@ -31,52 +33,85 @@ export default class List extends React.Component {
     * Acrescenta a nova task na listagem dentro do state
     * @param {*} event 
     */
-   handleSubmit(e) {
+   handleSubmit(event) {
       this.setState({
          toDoList: [
-            ...this.state.toDoList, 
-            this.state.input
+            ...this.state.toDoList,
+            {
+               name: this.state.input,
+               checked: false
+            }
          ],
          input: ''
       })
-      e.preventDefault()
+      event.preventDefault()
    }
 
    /**
     * Altera o nome da task no array de tarefas (acionado pelo handleBlur do ItemList.js)
-    * @param {*} event 
+    * @param {*} name 
     * @param {*} index
     */
-   handleInput(e, index) {
-      this.setState({
-         toDoList: this.state.toDoList.map((task, ind) => ind === index ? e : task)
+   handleInput(name, index) {
+      this.setState(state => {
+         state.toDoList[index].name = name
+         return state
       })
    }
 
    /**
     * Remove a task clicada.
+    * @param {*} index 
+    */
+   removeTask(index) {
+      this.setState(state => {
+         state.toDoList.splice(index, 1)
+         return state
+      })
+   }
+   
+   /**
+    * Habilita/desabilita a key passada no state.
+    * @param {*} key 
+    */
+   toggleChecked(index) {
+      this.setState(state => {
+         state.toDoList[index].checked = !state.toDoList[index].checked
+         return state
+      })
+   }
+
+   /**
+    * 
     * @param {*} event 
     */
-   removeTask(e) {
+   checkAll(event) {
       this.setState({
-         toDoList: this.state.toDoList.filter((task, ind) => ind !== e)
+         toDoList: this.state.toDoList.map(task => ({...task, checked: event.target.checked}))
       })
    }
 
    render() {
-      return(
+      let { input, toDoList } = this.state
+      return (
          <div>
             <h1>Listinha dos Afazeres</h1>
             <form onSubmit={this.handleSubmit}>
-               <input onChange={this.handleInputValue} value={this.state.input} />
+               <input type="checkbox" onChange={this.checkAll}></input>
+               <input onChange={this.handleInputValue} value={input} />
             </form>
             <ul>
-               {this.state.toDoList.map((task, ind) => {
+               {toDoList.map((task, ind) => {
+
                   return (
-                     <div key={ind}>
-                        <ItemList task={task} handleBlur={(e) => this.handleInput(e, ind)} />
-                        <button onClick={() => this.removeTask(ind)}>X</button>
-                     </div>
+                     <ItemList
+                        key={ind}
+                        taskName={task.name}
+                        handleBlur={(e) => this.handleInput(e, ind)}
+                        removeTask={() => this.removeTask(ind)}
+                        toggleChecked={() => this.toggleChecked(ind)}
+                        checked={task.checked}
+                     />
                   )
                })}
             </ul>
