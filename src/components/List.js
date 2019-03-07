@@ -1,5 +1,6 @@
 import React from 'react'
 import ItemList from './ItemList'
+import './list.css'
 
 export default class List extends React.Component {
 
@@ -94,27 +95,29 @@ export default class List extends React.Component {
    render() {
       let { input, toDoList } = this.state
       return (
-         <div>
-            <h1>Listinha dos Afazeres</h1>
-            <form onSubmit={this.handleSubmit}>
-               <input type="checkbox" onChange={this.checkAll}></input>
-               <input onChange={this.handleInputValue} value={input} />
-            </form>
-            <ul>
-               {toDoList.map((task, ind) => {
+         <div id="body">
+            <h1>ToDo</h1>
+            <div id="list">
+               <form onSubmit={this.handleSubmit}>
+                  <input type="checkbox" onChange={this.checkAll}></input>
+                  <input onChange={this.handleInputValue} value={input} />
+               </form>
+               <ul>
+                  {toDoList.map((task, ind) => {
 
-                  return (
-                     <ItemList
-                        key={ind}
-                        taskName={task.name}
-                        handleBlur={(e) => this.handleInput(e, ind)}
-                        removeTask={() => this.removeTask(ind)}
-                        toggleChecked={() => this.toggleChecked(ind)}
-                        checked={task.checked}
-                     />
-                  )
-               })}
-            </ul>
+                     return (
+                        <ItemList
+                           key={ind}
+                           taskName={task.name}
+                           handleBlur={(e) => this.handleInput(e, ind)}
+                           removeTask={() => this.removeTask(ind)}
+                           toggleChecked={() => this.toggleChecked(ind)}
+                           checked={task.checked}
+                        />
+                     )
+                  })}
+               </ul>
+            </div>
          </div>
       )
    }
