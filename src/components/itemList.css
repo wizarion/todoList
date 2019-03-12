@@ -2,3 +2,12 @@
     color: #afafaf;
     text-decoration: line-through;
 }
+.item {
+    width: 100%;
+    height: 40px;
+    font-size: x-large;
+    border-bottom: groove;
+    background-color: bisque;
+    display: flex;
+    align-items: center;
+}

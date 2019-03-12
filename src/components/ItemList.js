@@ -44,7 +44,7 @@ export default class ItemList extends React.Component {
    render() {
       let { editable } = this.state
       return (
-         <li>
+         <li className="item">
             <input type="checkbox" checked={this.props.checked} onChange={() => this.props.toggleChecked()}></input>
             {!editable ?
                <label
@@ -55,8 +55,8 @@ export default class ItemList extends React.Component {
                   autoFocus
                   onBlur={this.handleBlur}
                   onKeyPress={this.handleEnter}
-                  defaultValue={this.props.taskName}>
-               </input>}
+                  defaultValue={this.props.taskName}
+                  className="input" />}
 
             <button onClick={this.props.removeTask}>X</button>
          </li>

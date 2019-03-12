@@ -70,7 +70,7 @@ export default class List extends React.Component {
          return state
       })
    }
-   
+
    /**
     * Habilita/desabilita a key passada no state.
     * @param {*} key 
@@ -88,7 +88,7 @@ export default class List extends React.Component {
     */
    checkAll(event) {
       this.setState({
-         toDoList: this.state.toDoList.map(task => ({...task, checked: event.target.checked}))
+         toDoList: this.state.toDoList.map(task => ({ ...task, checked: event.target.checked }))
       })
    }
 
@@ -99,8 +99,12 @@ export default class List extends React.Component {
             <h1>ToDo</h1>
             <div id="list">
                <form onSubmit={this.handleSubmit}>
-                  <input type="checkbox" onChange={this.checkAll}></input>
-                  <input onChange={this.handleInputValue} value={input} />
+                  <input type="checkbox" onChange={this.checkAll} />
+                  <input
+                     className="input"
+                     onChange={this.handleInputValue}
+                     value={input}
+                     placeholder="What do you need to do?" />
                </form>
                <ul>
                   {toDoList.map((task, ind) => {
