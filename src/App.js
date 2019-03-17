@@ -4,7 +4,9 @@ import List from './components/List'
 class App extends Component {
   render() {
     return (
-       <List />
+       <div style={{minHeight: "100vh", backgroundColor: "#f0efe9"}}>
+          <List />
+       </div>
     );
   }
 }
