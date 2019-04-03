@@ -34,17 +34,20 @@ export default class List extends React.Component {
     * Acrescenta a nova task na listagem dentro do state
     * @param {*} event 
     */
-   handleSubmit(event) {
-      this.setState({
-         toDoList: [
-            ...this.state.toDoList,
-            {
-               name: this.state.input,
-               checked: false
-            }
-         ],
-         input: ''
-      })
+   handleSubmit(event, input = this.state.input) {
+   
+      if (input) {
+         this.setState({
+            toDoList: [
+               ...this.state.toDoList,
+               {
+                  name: input,
+                  checked: false
+               }
+            ],
+            input: ''
+         })   
+      }
       event.preventDefault()
    }
 
@@ -83,7 +86,7 @@ export default class List extends React.Component {
    }
 
    /**
-    * 
+    * Seleciona todos os checkbox.
     * @param {*} event 
     */
    checkAll(event) {
